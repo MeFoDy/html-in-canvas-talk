@@ -1,0 +1,111 @@
+/* Screen Filler by Elliot Jay Stocks, with a landing-page adaptation.
+   The original stylesheet and this adaptation are CC BY-NC-SA 1.0.
+   https://creativecommons.org/licenses/by-nc-sa/1.0/ */
+@import url("../../zen-garden/217.css");
+
+/* Keep the colored fields and right rail, with space for Cyrillic and the form. */
+html { padding: clamp(.9rem, 2.6vw, 3rem); }
+body { font-size: 1rem; }
+
+aside.theme-picker {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  right: auto;
+  width: max-content;
+  max-width: 100%;
+  margin-inline-start: auto;
+  padding: .55rem .75rem;
+  background-color: #f6f792;
+  color: #272d38;
+  font-size: .875rem;
+}
+
+.theme-picker [aria-pressed="true"] {
+  background: #272d38;
+  border-color: #272d38;
+  color: #fff;
+}
+.theme-picker [aria-pressed="true"]:focus-visible { outline-color: #272d38; }
+
+section.intro { padding: clamp(1.25rem, 4vw, 4rem); }
+section.intro .event-date {
+  display: inline-block;
+  padding: .3em .6em;
+  background: #a92340;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+}
+
+section.intro h1 {
+  display: block;
+  margin: .25em 0 .18em;
+  padding: 0;
+  background: transparent;
+  color: #20262d;
+  font: 800 clamp(2rem, 6.5vw, 6rem)/.99 'Golos Text', Arial, sans-serif;
+  letter-spacing: -.055em;
+  text-transform: none;
+  overflow-wrap: anywhere;
+}
+
+section.intro div.summary { padding: 0; color: #20262d; }
+section.intro div.summary p:last-child,
+section.intro div.summary p {
+  max-width: 35rem;
+  margin: 0 0 .85em;
+  padding: 0;
+  border: 0;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.cta { border: 0; background: #272d38; color: #fff; font-weight: 700; }
+.cta:hover { background: #121820; }
+.cta:focus-visible { outline-color: #20262d; }
+
+div.main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  padding: 0 clamp(1.25rem, 4vw, 4rem) 2rem;
+}
+
+div.main > div { width: auto; padding: clamp(1rem, 2.3vw, 2rem); }
+div.main h2 {
+  color: #24292f;
+  font-size: clamp(1.55rem, 3.25vw, 3rem);
+  letter-spacing: -.035em;
+}
+div.main .participation { background: #ea2e49; color: #090909; }
+div.main .participation h2 { color: inherit; }
+
+.program > div {
+  display: grid;
+  grid-template-columns: 4em 1fr;
+  align-items: baseline;
+  gap: .4em;
+  margin-top: .7rem;
+  border-top: 1px solid #707983;
+  padding-top: .65rem;
+}
+.program dt { font-weight: 700; }
+
+footer { width: 100%; color: #272d38; }
+footer p { padding-block: .15rem; }
+footer a { margin: 0; text-decoration: underline; }
+
+@media (min-width: 715px) {
+  /* The sticky switch sits on the rail, beside the start of the hero. */
+  aside.theme-picker { margin-bottom: -3.4rem; margin-inline-end: 3rem; }
+  section.intro { width: 73%; padding-block: 2rem 1.7rem; }
+}
+
+@media (max-width: 714px) {
+  section.intro { width: auto; }
+  div.main { grid-template-columns: 1fr; }
+  div.extra1 { display: none; }
+}

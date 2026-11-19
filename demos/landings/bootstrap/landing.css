@@ -1,0 +1,55 @@
+.navbar-inner {
+  border-radius: 0;
+}
+
+.hero-unit {
+  padding-top: 42px;
+  padding-bottom: 42px;
+}
+
+.event-date {
+  margin-top: 16px;
+  font-weight: bold;
+}
+
+.event-time {
+  margin-bottom: 0;
+  color: #555;
+}
+
+#program h2 {
+  margin-top: 2px;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.form-actions-local {
+  margin-top: 6px;
+}
+
+#signup-status {
+  margin: 0;
+}
+
+#signup-status.alert {
+  margin-top: 15px;
+}
+
+@media (max-width: 767px) {
+  .navbar {
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .hero-unit {
+    padding: 26px;
+  }
+
+  .hero-unit h1 {
+    font-size: 38px;
+  }
+
+  #program article {
+    margin-bottom: 20px;
+  }
+}

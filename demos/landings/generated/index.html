@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ночь в обсерватории</title>
+  <link rel="stylesheet" href="../../../assets/font/fonts.css">
+  <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="../../../assets/cursors/cursors.css">
+  <script defer src="../../../assets/cursors/idle.js"></script>
+</head>
+<body id="top">
+  <header>
+    <div class="shell header-content">
+      <a class="brand" href="#top">Обсерватория</a>
+      <nav aria-label="Навигация">
+        <a href="#program">Программа</a>
+        <button class="button secondary" type="button" data-book>Записаться</button>
+      </nav>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="title">
+      <div class="intro">
+        <h1 id="title">Ночь в обсерватории</h1>
+        <p class="lead">Поднимитесь под купол и посмотрите на ночное небо в большой телескоп вместе с астрономом.</p>
+        <p class="date">28 ноября, <time datetime="18:30">18:30</time></p>
+        <div class="actions">
+          <button class="button primary" type="button" data-book>Занять место</button>
+          <a class="button secondary" href="#program">Программа вечера</a>
+        </div>
+      </div>
+      <img class="observatory" src="observatory.webp" width="1800" height="693" alt="Купол обсерватории на горе под звёздным небом">
+    </section>
+    <section id="program" aria-labelledby="program-title">
+      <h2 id="program-title">Программа вечера</h2>
+      <div class="schedule">
+        <article>
+          <time datetime="18:30">18:30</time>
+          <h3>Открытие дверей</h3>
+          <p>Встречаемся в холле Городской обсерватории.</p>
+        </article>
+        <article>
+          <time datetime="19:00">19:00</time>
+          <h3>Экскурсия по куполу</h3>
+          <p>Посмотрим, как поворачивается купол и куда смотрит телескоп.</p>
+        </article>
+        <article>
+          <time datetime="20:00">20:00</time>
+          <h3>Наблюдения в телескоп</h3>
+          <p>По очереди посмотрим в окуляр и разглядим детали ночного неба.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <dialog aria-labelledby="dialog-title">
+    <button type="button" class="close" aria-label="Закрыть">×</button>
+    <h2 id="dialog-title">Запись на вечер</h2>
+    <p>28 ноября, Городская обсерватория</p>
+    <form>
+      <label for="guest">Как вас зовут?</label>
+      <input id="guest" required pattern=".*\S.*" maxlength="60" autocomplete="given-name">
+      <button class="button primary" type="submit">Подтвердить</button>
+    </form>
+    <p role="status" aria-live="polite"></p>
+  </dialog>
+  <script src="booking.js"></script>
+</body>
+</html>

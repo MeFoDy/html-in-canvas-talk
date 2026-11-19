@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Форма заказа на холсте</title>
+<script>
+const params = new URLSearchParams(location.search);
+const foil = params.has('foil');
+if (foil) document.documentElement.classList.add('foil');
+</script>
+<script defer src="../assets/cursors/idle.js"></script>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="paper.css">
+<body class="ticket-demo">
+<main>
+  <h1>Форма заказа на холсте</h1>
+  <p class="demo-prompt">Заполните поля, добавьте билет и переключите режим.</p>
+  <div class="controls" role="group" aria-label="Способ отображения">
+    <button id="native" aria-pressed="false">HTML-in-Canvas</button>
+    <button id="gl" aria-pressed="false">Голограмма · GLSL</button>
+    <button id="html" aria-pressed="true">Обычный HTML</button>
+    <button id="motion" type="button" hidden>Остановить волну</button>
+  </div>
+  <p role="status" class="status" id="mode">Работает обычный HTML.</p>
+  <div class="surface">
+    <article class="paper">
+      <header class="ticket-event">
+        <p class="label">НОЧНОЙ СЕАНС</p>
+        <h2>Обсерватория</h2>
+        <p>Наблюдение за звёздами</p>
+      </header>
+      <form class="ticket-order" aria-labelledby="order-title">
+        <h3 id="order-title">Заказать билет</h3>
+        <div class="ticket-fields">
+          <label>Имя<input name="name" autocomplete="name" required></label>
+          <label>Электронная почта<input name="email" type="email" autocomplete="email" required></label>
+        </div>
+        <div class="ticket-actions">
+          <button type="submit" id="add">Добавить билет</button>
+          <p id="qty" role="status">Билетов в заказе: 0</p>
+        </div>
+      </form>
+    </article>
+  </div>
+</main>
+<script src="hologram.js"></script>
+<script src="surface.js"></script>
+<script>
+let tickets = 0;
+const host = document.querySelector('.surface');
+const eventHeader = document.querySelector('.ticket-event');
+const form = document.querySelector('.ticket-order');
+const qty = document.querySelector('#qty');
+const mode = document.querySelector('#mode');
+const native = document.querySelector('#native');
+const gl = document.querySelector('#gl');
+const html = document.querySelector('#html');
+const motion = document.querySelector('#motion');
+const motionLabel = document.createElement('span');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let motionEnabled = !reducedMotion.matches;
+
+if (foil) {
+  document.title = 'Голограмма с живой формой';
+  html.textContent = 'HTML';
+  native.hidden = true;
+  gl.textContent = 'Магия';
+  html.parentElement.prepend(html);
+  motionLabel.className = 'motion-icon';
+  motionLabel.setAttribute('aria-hidden', 'true');
+  motion.replaceChildren(motionLabel);
+  motion.hidden = false;
+  motion.disabled = true;
+}
+
+const surface = makeSurface(host, document.querySelector('.paper'), (ctx, canvas) => {
+  if (host.clientWidth < 740) return;
+  const scale = canvas.width / host.clientWidth;
+  ctx.save();
+  ctx.translate((eventHeader.offsetWidth - 63) * scale, 44 * scale);
+  ctx.scale(scale, scale);
+  ctx.rotate(-.12);
+  ctx.strokeStyle = ctx.fillStyle = '#9a4544';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-48, -14, 96, 28);
+  ctx.font = 'bold 14px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('CANVAS 2D', 0, 0);
+  ctx.restore();
+}, (active, message) => {
+  mode.textContent = message || (active === 'webgl' ? 'Волна изгибает бумагу и буквы. Поля ввода остаются на месте.' : 'Браузер рисует форму в Canvas 2D.');
+  native.setAttribute('aria-pressed', active === '2d');
+  gl.setAttribute('aria-pressed', active === 'webgl');
+  html.setAttribute('aria-pressed', !active);
+  if (foil) {
+    motion.disabled = active !== 'webgl';
+    updateMotionControl();
+  } else {
+    motion.hidden = active !== 'webgl';
+  }
+});
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  qty.textContent = 'Билетов в заказе: ' + (++tickets);
+  surface.render();
+});
+form.addEventListener('input', surface.render);
+form.addEventListener('focusin', surface.render);
+form.addEventListener('focusout', surface.render);
+
+native.onclick = () => surface.enable('2d');
+gl.onclick = () => surface.enable('webgl');
+html.onclick = () => surface.html('Работает обычный HTML.');
+
+function updateMotionControl() {
+  const playing = !motion.disabled && motionEnabled;
+  const label = playing ? 'Остановить волну' : 'Возобновить волну';
+  if (foil) {
+    motion.setAttribute('aria-label', label);
+    motionLabel.classList.toggle('playing', playing);
+  } else {
+    motion.textContent = label;
+  }
+}
+function setMotion(enabled) {
+  motionEnabled = enabled;
+  updateMotionControl();
+  surface.setMotion(enabled);
+}
+motion.onclick = () => setMotion(!motionEnabled);
+reducedMotion.addEventListener('change', event => setMotion(!event.matches));
+setMotion(motionEnabled);
+
+if (foil && params.get('mode') === 'webgl') surface.enable('webgl');
+</script>
+</body>
+</html>

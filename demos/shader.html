@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Один закат, два рендера</title>
+<script defer src="../assets/cursors/idle.js"></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+main{padding:36px 30px 52px}
+.controls{margin-top:0;padding-right:50px}
+.panes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+#motion{display:grid;place-items:center;width:46px;height:42px;padding:0}
+#motion::before{content:"";width:15px;height:16px;background:currentColor;clip-path:polygon(0 0,100% 50%,0 100%)}
+#motion[aria-pressed=true]::before{clip-path:polygon(0 0,34% 0,34% 100%,0 100%,0 0,66% 0,100% 0,100% 100%,66% 100%,66% 0)}
+#shader-status:empty{display:none}
+.panes figure{margin:0;min-width:0}
+.panes canvas{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:8px}
+.panes figcaption{margin-bottom:8px}
+output{font-variant-numeric:tabular-nums;min-width:48px}
+@media(max-width:550px){.panes{gap:10px}.panes canvas{aspect-ratio:1/1}}
+</style>
+<main>
+  <div class="controls">
+    <label>Высота волн <input id="waves" type="range" min="0" max="100" value="0"><output for="waves">0%</output></label>
+    <button id="motion" type="button" aria-label="Анимация волн" aria-pressed="false" title="Запустить анимацию"></button>
+  </div>
+  <p role="status" class="status" id="shader-status"></p>
+  <div class="panes">
+    <figure>
+      <figcaption class="label">Canvas 2D</figcaption>
+      <canvas id="plain" width="600" height="400" aria-label="Закат с ровным отражением"></canvas>
+    </figure>
+    <figure>
+      <figcaption class="label">WebGL</figcaption>
+      <canvas id="effect" width="600" height="400" aria-label="Тот же закат с рябью на воде"></canvas>
+    </figure>
+  </div>
+</main>
+<script src="shader.js"></script>
+</html>

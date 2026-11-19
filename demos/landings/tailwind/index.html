@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ночь в обсерватории</title>
+  <link rel="stylesheet" href="../../../assets/font/fonts.css">
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="../../../assets/cursors/cursors.css">
+  <script defer src="../../../assets/cursors/idle.js"></script>
+  <script defer src="./registration.js"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <header class="sticky top-0 z-10 border-b border-slate-200/80 bg-white/80 backdrop-blur">
+    <nav aria-label="Навигация" class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-10 lg:pr-20">
+      <a href="#start" class="flex items-center gap-2.5 rounded-md font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600">
+        <span class="grid size-8 place-items-center rounded-lg bg-sky-100 text-lg text-sky-700" aria-hidden="true">✦</span>
+        Обсерватория
+      </a>
+      <div class="flex items-center gap-5 text-sm font-semibold sm:gap-7">
+        <a href="#program" class="rounded-md text-slate-600 hover:text-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600">Программа</a>
+        <button type="button" data-register class="hidden rounded-lg bg-indigo-50 px-3.5 py-2 text-indigo-700 hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600 sm:inline-block">Записаться</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="start" class="sky-grid scroll-mt-16">
+    <div class="mx-auto grid max-w-6xl items-start gap-9 px-5 pb-10 pt-9 sm:px-10 md:grid-cols-[1.16fr_1fr] md:gap-8 md:pb-4 md:pt-12 lg:gap-14">
+      <section aria-labelledby="event-title" class="pt-1 md:pt-4">
+        <time class="inline-flex items-center gap-2 rounded-full bg-sky-100 px-3 py-1.5 text-sm font-semibold text-sky-900" datetime="2026-11-28T18:30">
+          <span class="text-sky-600" aria-hidden="true">✦</span>
+          28 ноября · 18:30
+        </time>
+        <h1 id="event-title" class="mt-5 text-4xl font-extrabold leading-[1.03] tracking-[-0.04em] sm:text-5xl lg:text-[3.6rem]">
+          Ночь<br>в обсерватории
+        </h1>
+        <p class="mt-5 max-w-md text-base leading-relaxed text-slate-600 lg:text-[1.075rem]">
+          Поднимемся под купол, посмотрим в телескоп и научимся находить созвездия на ночном небе.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <button type="button" data-register class="inline-flex min-h-11 items-center gap-3 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600">
+            Записаться на вечер <span aria-hidden="true">↗</span>
+          </button>
+          <a href="#program" class="rounded-md text-sm font-semibold text-slate-700 hover:text-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600">Смотреть программу <span aria-hidden="true">↓</span></a>
+        </div>
+        <ul aria-label="Условия участия" class="mt-6 flex flex-wrap gap-2 text-xs font-medium text-slate-600">
+          <li class="rounded-md bg-white px-2.5 py-1.5 ring-1 ring-inset ring-slate-200">Для новичков</li>
+          <li class="rounded-md bg-white px-2.5 py-1.5 ring-1 ring-inset ring-slate-200">Городская обсерватория</li>
+        </ul>
+      </section>
+
+      <section id="program" tabindex="-1" aria-labelledby="program-title" class="scroll-mt-20 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-sky-950/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600">
+        <div class="relative flex min-h-[110px] items-end overflow-hidden border-b border-sky-100 bg-sky-50 px-5 py-4 sm:px-6">
+          <div class="star-chart absolute inset-0" aria-hidden="true">
+            <span>✦</span><span>✧</span><span>·</span><span>✦</span>
+          </div>
+          <div class="relative flex items-center gap-3">
+            <div aria-hidden="true" class="grid size-12 place-content-center rounded-lg border border-sky-200 bg-white/90 text-center text-lg font-bold leading-none text-indigo-700">
+              28
+              <small class="mt-1 text-[0.57rem] font-bold uppercase tracking-wider text-slate-600">ноя</small>
+            </div>
+            <h2 id="program-title" class="font-bold tracking-tight sm:text-lg">Программа вечера</h2>
+          </div>
+        </div>
+        <div class="divide-y divide-slate-100 px-5 py-1 sm:px-6">
+          <details>
+            <summary class="flex min-h-12 list-none items-center gap-3 rounded-md py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+              <time datetime="18:30" class="font-mono text-xs font-semibold text-indigo-700">18:30</time>
+              <span class="flex-1 font-semibold">Открытие дверей</span>
+              <span class="program-toggle text-slate-500" aria-hidden="true"></span>
+            </summary>
+            <p class="pb-3 pl-[3.15rem] text-sm leading-relaxed text-slate-600">Встретимся у входа и познакомимся с ведущими вечера.</p>
+          </details>
+          <details>
+            <summary class="flex min-h-12 list-none items-center gap-3 rounded-md py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+              <time datetime="19:00" class="font-mono text-xs font-semibold text-indigo-700">19:00</time>
+              <span class="flex-1 font-semibold">Экскурсия по куполу</span>
+              <span class="program-toggle text-slate-500" aria-hidden="true"></span>
+            </summary>
+            <p class="pb-3 pl-[3.15rem] text-sm leading-relaxed text-slate-600">Поднимемся к телескопу и узнаем, как его наводят на небесные объекты.</p>
+          </details>
+          <details>
+            <summary class="flex min-h-12 list-none items-center gap-3 rounded-md py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+              <time datetime="20:00" class="font-mono text-xs font-semibold text-indigo-700">20:00</time>
+              <span class="flex-1 font-semibold">Наблюдения в телескоп</span>
+              <span class="program-toggle text-slate-500" aria-hidden="true"></span>
+            </summary>
+            <p class="pb-3 pl-[3.15rem] text-sm leading-relaxed text-slate-600">По очереди посмотрим на объекты, которые будут видны в этот вечер.</p>
+          </details>
+        </div>
+        <p class="border-t border-slate-100 bg-slate-50 px-5 py-3.5 text-xs leading-relaxed text-slate-600 sm:px-6">Наблюдения зависят от облачности.</p>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="registration" aria-labelledby="registration-title" class="m-auto w-[calc(100%-2rem)] max-w-sm overflow-auto rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-xl backdrop:bg-slate-950/40 sm:p-6">
+    <div class="flex items-start justify-between gap-4">
+      <h2 id="registration-title" class="pt-1 text-xl font-bold tracking-tight">Записаться на вечер</h2>
+      <button type="button" data-close class="grid size-9 shrink-0 place-items-center rounded-lg bg-slate-100 text-xl text-slate-600 hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" aria-label="Закрыть">×</button>
+    </div>
+    <p class="mt-2 text-sm text-slate-600">Ночь в обсерватории · 28 ноября, 18:30</p>
+    <form method="dialog" class="mt-5 space-y-4">
+      <label class="block text-sm font-semibold">
+        Как вас зовут
+        <input name="guest" required maxlength="60" autocomplete="name" autofocus class="mt-1.5 block w-full rounded-lg border border-slate-300 px-3 py-2 font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+      </label>
+      <label class="block text-sm font-semibold">
+        Количество гостей
+        <select name="places" class="mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-2.5 py-2 font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select>
+      </label>
+      <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600">Подтвердить запись</button>
+    </form>
+    <p data-confirmation tabindex="-1" hidden class="mt-5 rounded-lg bg-emerald-50 p-3 text-sm leading-relaxed text-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"></p>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Что попадает в рисунок карточки?</title>
+<script defer src="../assets/cursors/idle.js"></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+  main {padding-top:35px}
+  .compare {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:19px}
+  figure {margin:0;min-width:0}
+  figcaption {margin-bottom:8px;color:var(--muted)}
+  .surface,.card {height:146px;width:100%}
+  .card {position:relative;padding:20px;background:#243f50;border-left:6px solid #8de5cf;color:#f8f6e9}
+  .card strong {display:block;font-size:28px}
+  .price {display:block;position:absolute;left:20px;top:85px;padding:5px 13px;background:#c7f6df;color:#112c35;font:700 25px/1.2 'Golos Text',sans-serif}
+  canvas {display:block;width:100%;height:100%}
+  .controls {margin-top:14px}
+  .controls .status {margin:0}
+  @media(max-width:560px){.card strong{font-size:20px}.compare{gap:10px}}
+</style>
+<main>
+  <div class="controls">
+    <button type="button" id="toggle" aria-pressed="false" disabled>Нарисовать цену</button>
+    <p id="status" role="status" class="status" hidden></p>
+  </div>
+  <div class="compare">
+    <figure><figcaption>Обычный HTML</figcaption><article class="card"><strong>Ночной сеанс</strong><span class="price">12 ₽</span></article></figure>
+    <figure><figcaption id="caption" aria-live="polite">Исходный HTML</figcaption><div class="surface" id="surface"><article class="card" id="card"><strong>Ночной сеанс</strong><span class="price" id="price">12 ₽</span></article></div></figure>
+  </div>
+</main>
+<script>
+  const surface = document.querySelector('#surface');
+  const card = document.querySelector('#card');
+  const price = document.querySelector('#price');
+  const toggle = document.querySelector('#toggle');
+  const statusLine = document.querySelector('#status');
+  const caption = document.querySelector('#caption');
+  const canvas = document.createElement('canvas');
+  canvas.id = 'canvas';
+  canvas.setAttribute('content', 'drawable');
+  const ctx = canvas.getContext('2d');
+  if (canvas.content === 'drawable' && ctx?.drawElementImage && canvas.requestPaint) {
+    card.setAttribute('drawable', '');
+    price.setAttribute('drawable', '');
+    surface.replaceChildren(canvas);
+    canvas.append(card);
+    let showPrice = false;
+    function syncSize() {
+      const scale = devicePixelRatio || 1;
+      canvas.width = Math.round(surface.clientWidth * scale);
+      canvas.height = Math.round(surface.clientHeight * scale);
+      canvas.requestPaint();
+    }
+    const observer = new ResizeObserver(syncSize);
+    function fallback() {
+      observer.disconnect();
+      visibility.disconnect();
+      canvas.onpaint = null;
+      surface.replaceChildren(card);
+      card.removeAttribute('drawable');
+      price.removeAttribute('drawable');
+      toggle.disabled = true;
+      caption.textContent = 'Исходный HTML';
+      statusLine.hidden = false;
+      statusLine.textContent = 'Нативный кадр недоступен. В HTML цена по-прежнему видна.';
+    }
+    let first = true;
+    let deadline;
+    const visibility = new IntersectionObserver(([entry]) => {
+      clearTimeout(deadline);
+      if (entry.isIntersecting && first) {
+        canvas.requestPaint();
+        deadline = setTimeout(fallback, 2500);
+      }
+    });
+    visibility.observe(canvas);
+    canvas.onpaint = () => {
+      try {
+        ctx.reset();
+        ctx.drawElementImage(card, 0, 0, canvas.width, canvas.height);
+        if (showPrice) {
+          const scale = canvas.width / surface.clientWidth;
+          ctx.drawElementImage(price, (card.clientLeft + price.offsetLeft) * scale, price.offsetTop * scale, price.offsetWidth * scale, price.offsetHeight * scale);
+        }
+        if (first) { visibility.disconnect(); clearTimeout(deadline); first = false; toggle.disabled = false; }
+        const label = showPrice ? 'Canvas 2D · карточка и цена' : 'Canvas 2D';
+        if (caption.textContent !== label) caption.textContent = label;
+      } catch { clearTimeout(deadline); fallback(); }
+    };
+    toggle.addEventListener('click', () => {
+      showPrice = !showPrice;
+      toggle.setAttribute('aria-pressed', String(showPrice));
+      toggle.textContent = showPrice ? 'Убрать цену' : 'Нарисовать цену';
+      canvas.requestPaint();
+    });
+    observer.observe(surface);
+    syncSize();
+  } else {
+    statusLine.hidden = false;
+    statusLine.textContent = 'В этом браузере показан обычный HTML.';
+  }
+</script>
+</html>

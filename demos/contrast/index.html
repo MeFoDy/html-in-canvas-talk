@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Контраст сайта обсерватории</title>
+<link rel="stylesheet" href="../../assets/font/fonts.css">
+<link rel="stylesheet" href="map.css">
+<main>
+  <div class="toolbar">
+    <button id="contrast" type="button" aria-pressed="false" disabled>Усилить контраст</button>
+    <span id="render-status" role="status">HTML</span>
+  </div>
+  <div id="site-host">
+    <article id="site" aria-label="Сайт городской обсерватории Орбита">
+      <header><strong class="wordmark"><span aria-hidden="true">✳</span> Орбита</strong><a href="#registration">Запись на сеанс ↓</a></header>
+      <div class="columns">
+        <section class="intro">
+          <p class="edition">Городская обсерватория</p>
+          <h1>Ночь под куполом</h1>
+          <p>Смотрим на лунные кратеры в телескоп.<br>Начало в 21:00. Вход свободный.</p>
+        </section>
+        <figure aria-label="Фазы Луны"><div class="phases" aria-hidden="true"><i></i><i></i><i></i></div><figcaption>Лунный атлас · Выпуск 04</figcaption></figure>
+      </div>
+      <form id="registration">
+        <label for="guest">Имя для записи</label>
+        <div class="form-row"><input id="guest" name="name" required autocomplete="off" placeholder="Ваше имя"><button type="submit">Записаться →</button></div>
+        <output id="result" aria-live="polite"></output>
+      </form>
+    </article>
+  </div>
+  <p class="meter" aria-live="polite">Контраст текста и фона <strong id="ratio"></strong><span>Минимум WCAG AA для обычного текста — 4,5:1</span></p>
+</main>
+<script src="../surface.js"></script><script src="map.js"></script>
+</html>

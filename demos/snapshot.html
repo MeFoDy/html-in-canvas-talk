@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Когда снимок устаревает</title>
+<script defer src="../assets/cursors/idle.js"></script><link rel="stylesheet" href="shared.css">
+<style>
+main{padding:26px 54px 14px}
+.controls{margin:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:22px}
+figure{margin:0;min-width:0}
+figcaption{color:var(--muted);margin-bottom:8px;font-size:23px}
+.ticket{padding:15px 24px;background:#284655;color:#fff;border-left:12px solid #80d9c0;min-height:165px}
+.ticket b{display:block;font-size:34px;margin:8px 0}
+.ticket span{font-size:59px;font-weight:700;line-height:1.15}
+.ticket small{color:#b4e7d8}
+#copy{min-height:165px}
+#copy canvas{display:block;width:100%;height:auto}
+@media(max-width:560px){.pair{gap:10px}.ticket{padding-inline:10px}.ticket b{font-size:18px}.ticket span{font-size:32px}}
+.status:empty{display:none}
+pre{margin:18px 0 0;font:22px/1.32 "PT Mono",monospace;white-space:pre-wrap}
+pre code.hljs{background:transparent;padding:0;overflow:visible}
+</style><link rel="stylesheet" href="../vendor/highlight/monokai.min.css"></head><body><main>
+<div class="controls"><button class="primary" id="change">Изменить цену</button><button id="render">Отрендерить</button></div>
+<div class="pair"><figure><figcaption>Живой HTML</figcaption><div class="ticket" id="capture"><small>НОЧНОЙ СЕАНС</small><b>Обсерватория</b><span id="price">12 ₽</span></div></figure>
+<figure><figcaption>Снимок html2canvas</figcaption><div id="copy" role="img" aria-label="Копия билета" aria-live="polite"></div></figure></div>
+<p class="status" role="status" id="status"></p>
+<pre><code class="language-javascript">html2canvas(document.querySelector("#capture")).then(canvas =&gt; {
+    document.body.appendChild(canvas)
+});</code></pre>
+</main><script src="../vendor/highlight/highlight.pack.js"></script><script>hljs.highlightElement(document.querySelector('pre code'))</script><script src="../vendor/html2canvas/html2canvas.min.js"></script><script>
+const ticket=document.querySelector('#capture'),price=document.querySelector('#price'),capture=document.querySelector('#render'),statusLine=document.querySelector('#status');
+async function takeSnapshot(){
+  if(capture.getAttribute('aria-disabled')==='true') return;
+  capture.setAttribute('aria-disabled','true');
+  document.querySelector('#change').setAttribute('aria-disabled','true');
+  try{
+    await document.fonts.ready;
+    const copy=await html2canvas(ticket,{backgroundColor:null,logging:false,scale:1});
+    const copySlot=document.querySelector('#copy');
+    copySlot.replaceChildren(copy);
+    copySlot.setAttribute('aria-label','Цена на снимке '+price.textContent);
+    statusLine.textContent='';
+  }catch{statusLine.textContent='Снимок получить не удалось.';}
+  finally{capture.removeAttribute('aria-disabled');document.querySelector('#change').removeAttribute('aria-disabled');}
+}
+document.querySelector('#change').onclick=()=>{
+  if(capture.getAttribute('aria-disabled')==='true') return;
+  price.textContent=(Number.parseInt(price.textContent)+3)+' ₽';
+};
+capture.onclick=takeSnapshot;takeSnapshot();
+</script></body></html>

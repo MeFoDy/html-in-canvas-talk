@@ -1,0 +1,229 @@
+.surface{width:100%;height:266px;border-radius:8px;overflow:hidden;background:#f1deb5;color:#282433}
+.surface canvas{display:block;width:100%;height:100%}
+.paper{box-sizing:border-box;width:100%;height:266px;padding:28px 40px;background:#f1deb5;color:#282433}
+.paper .label{color:#7a403d}.paper h2{font:700 44px/1.1 Georgia,serif;letter-spacing:-.045em;margin:12px 0}
+.paper p{font-size:20px;line-height:1.4}.paper button{margin-top:15px;background:#303443;color:#fff5d9;border:0}
+.paper button:focus-visible{outline-color:#923c2b}
+
+.ticket-demo h1 {margin-bottom:12px}
+.ticket-demo .demo-prompt {color:var(--muted)}
+.ticket-demo .controls {margin-top:12px}
+.ticket-demo .surface {margin-top:4px}
+.ticket-demo .status {margin-top:6px}
+.ticket-demo .surface, .ticket-demo .paper {height:184px}
+
+.ticket-demo .paper {
+  display: grid;
+  grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr);
+  align-items: center;
+  padding: 16px 0;
+  background: linear-gradient(115deg, #f8e9c7, #ead0a0);
+  color-scheme: light;
+}
+
+.ticket-event {
+  padding: 0 30px;
+}
+
+.ticket-event .label {
+  font: 700 14px/1.4 ui-monospace, monospace;
+}
+
+.ticket-event h2 {
+  font-size: clamp(32px, 4.3vw, 44px);
+}
+
+.ticket-event p:last-child {
+  font-size: 17px;
+}
+
+.ticket-order {
+  display: grid;
+  align-content: center;
+  align-self: stretch;
+  gap: 8px;
+  padding: 0 30px;
+  border-left: 1px dashed #956c53;
+}
+
+.ticket-order h3 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -.025em;
+}
+
+.ticket-fields,
+.ticket-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ticket-fields label {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ticket-fields input {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  border: 1px solid #835e50;
+  border-radius: 5px;
+  padding: 7px 9px;
+  background: #fff5da;
+  color: #282433;
+  font: inherit;
+}
+
+.ticket-fields input:focus-visible {
+  outline-color: #923c2b;
+  outline-offset: 2px;
+}
+
+.ticket-demo #add {
+  flex: none;
+  margin: 0;
+}
+
+.ticket-demo #qty {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .ticket-event,
+  .ticket-order {
+    padding-inline: 22px;
+  }
+
+  .ticket-event h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 700px) {
+  .ticket-demo .surface,
+  .ticket-demo .paper {
+    height: 328px;
+  }
+
+  .ticket-demo .paper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    padding: 18px 0;
+  }
+
+  .ticket-event h2 {
+    margin: 4px 0;
+  }
+
+  .ticket-order {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #956c53;
+    border-left: 0;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ticket-demo .surface,
+  .ticket-demo .paper {
+    height: 405px;
+  }
+
+  .ticket-fields {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ticket-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* Fine rules printed on the ticket make the bending surface visible at a distance. */
+.ticket-demo .paper {position:relative}
+.ticket-demo .paper::before,
+.ticket-demo .paper::after {
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  height:3px;
+  border-block:1px solid #987e5a;
+  pointer-events:none;
+}
+.ticket-demo .paper::before {top:12px}
+.ticket-demo .paper::after {bottom:12px}
+
+.foil .ticket-demo h1,
+.foil .ticket-demo .demo-prompt {
+  display: none;
+}
+
+.foil .ticket-demo .status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.foil .ticket-demo .controls {
+  margin-top: 0;
+}
+
+.foil .ticket-demo .controls button {
+  min-height: 44px;
+  font-size: clamp(16px, 2.25vw, 23px);
+}
+
+.foil .ticket-demo .surface {
+  margin-top: 18px;
+}
+
+.foil .ticket-demo #motion {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  width: 46px;
+  margin-left: auto;
+  padding: 0;
+}
+
+.foil .ticket-demo #motion:disabled {
+  opacity: .55;
+  border-color: #68717d;
+}
+
+.motion-icon {
+  width: 16px;
+  height: 18px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.motion-icon.playing {
+  clip-path: none;
+  background: linear-gradient(to right, currentColor 0 35%, transparent 35% 65%, currentColor 65%);
+}
+
+@media (min-width: 701px) {
+  .foil .ticket-demo .controls {
+    padding-right: 32px;
+  }
+
+  .foil .ticket-demo .surface,
+  .foil .ticket-demo .paper {
+    height: 290px;
+  }
+}

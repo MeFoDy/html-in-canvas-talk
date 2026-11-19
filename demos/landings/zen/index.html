@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ночь в городской обсерватории. 28 ноября в 18:30, экскурсия по куполу и наблюдения в телескоп.">
+  <title>Ночь в обсерватории</title>
+  <link rel="stylesheet" href="../../../assets/font/fonts.css">
+  <link rel="stylesheet" href="../../../assets/cursors/cursors.css">
+  <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="screen.css" id="screen">
+  <link rel="stylesheet" href="wiggles.css" id="wiggles" media="not all">
+  <script defer src="../../../assets/cursors/idle.js"></script>
+  <script defer src="landing.js"></script>
+</head>
+<body>
+  <div class="page-wrapper">
+    <aside class="sidebar theme-picker" aria-label="Оформление страницы" hidden>
+      <span class="theme-label" aria-hidden="true">Оформление</span>
+      <button type="button" data-theme="screen" aria-pressed="true">Screen Filler</button>
+      <button type="button" data-theme="wiggles" aria-pressed="false">Wiggles</button>
+    </aside>
+
+    <main>
+      <section class="intro" aria-labelledby="event-title">
+        <header>
+          <p class="event-date"><time datetime="2026-11-28T18:30">28 ноября · 18:30</time></p>
+          <h1 id="event-title">Ночь в обсерватории</h1>
+        </header>
+        <div class="summary">
+          <p>Поднимемся под купол городской обсерватории и посмотрим на небо в телескоп.</p>
+          <a class="cta" href="#register">Записаться <span aria-hidden="true">↘</span></a>
+        </div>
+      </section>
+
+      <div class="main supporting">
+        <div class="preamble requirements" role="region" aria-labelledby="program-title">
+          <h2 id="program-title">Программа</h2>
+          <dl class="program">
+            <div><dt><time datetime="18:30">18:30</time></dt><dd>Открытие дверей</dd></div>
+            <div><dt><time datetime="19:00">19:00</time></dt><dd>Экскурсия по куполу</dd></div>
+            <div><dt><time datetime="20:00">20:00</time></dt><dd>Наблюдения в телескоп</dd></div>
+          </dl>
+        </div>
+
+        <div class="participation" role="region" aria-labelledby="register">
+          <h2 id="register" tabindex="-1">Запись на вечер</h2>
+          <p id="register-hint">Демо-запись. Данные остаются на этой странице.</p>
+          <noscript><p>Для работы формы включите JavaScript.</p></noscript>
+          <form aria-describedby="register-hint" hidden>
+            <label>Имя <input name="name" autocomplete="name" required></label>
+            <label>Почта <input type="email" name="email" autocomplete="email" required></label>
+            <button class="cta" type="submit">Подтвердить запись</button>
+            <output aria-live="polite"></output>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Учебная адаптация <a href="https://www.csszengarden.com/" target="_blank" rel="noopener">CSS Zen Garden</a> Дэйва Ши для вымышленного события.</p>
+      <p><a href="https://www.csszengarden.com/217/" target="_blank" rel="noopener">Screen Filler</a> · Elliot Jay Stocks · <a href="https://creativecommons.org/licenses/by-nc-sa/1.0/" target="_blank" rel="noopener">CC BY-NC-SA 1.0</a></p>
+      <p><a href="https://www.csszengarden.com/099/" target="_blank" rel="noopener">Wiggles the Wonderworm</a> · Joseph Pearson · <a href="https://creativecommons.org/licenses/publicdomain/" target="_blank" rel="noopener">общественное достояние по заявлению автора</a></p>
+    </footer>
+  </div>
+  <div class="extra1" aria-hidden="true"></div>
+</body>
+</html>

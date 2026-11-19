@@ -1,0 +1,362 @@
+.slide.code-beat:has(pre),
+.slide.code-story,
+.slide.decision,
+.slide.resource-page,
+#check-frame,
+#css-overlap {
+    padding: 48px 76px 48px 60px;
+}
+
+.slide.code-beat:has(pre) h2,
+.slide.code-story h2,
+.slide.decision h2,
+.slide.resource-page h2,
+#check-frame h2 {
+    margin: 0 0 24px;
+    font-size: 46px;
+    line-height: 1.08;
+    text-wrap: initial;
+}
+
+.slide.code-example pre {
+    margin: 0;
+}
+
+.slide.code-example pre code {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font: 42px/1.25 'PT Mono', monospace;
+    letter-spacing: -.028em;
+}
+
+.slide.code-story pre.source code {
+    font-size: 32px;
+    line-height: 1.15;
+}
+
+.slide.code-story .code-explainer {
+    color: var(--type);
+    font-size: 26px;
+    line-height: 1.2;
+}
+
+.slide.code-story p + pre.source {
+    margin-top: 18px;
+}
+
+.slide .example-link {
+    display: inline-block;
+    margin-top: 16px;
+    color: var(--accent);
+    background: none;
+    font-size: 22px;
+    font-weight: 550;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.slide .example-link:focus-visible {
+    outline-color: var(--accent);
+}
+
+.code-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 216px;
+    align-items: center;
+    gap: 34px;
+}
+
+.code-split .form-shape {
+    justify-self: stretch;
+}
+
+.form-shape {
+    display: grid;
+    justify-items: start;
+    gap: 8px;
+    padding: 12px 16px;
+    color: var(--type);
+    background: #202838;
+    border: 1px solid #627084;
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+.field-shape {
+    box-sizing: border-box;
+    min-height: 36px;
+    width: 100%;
+    padding: 3px 9px;
+    border: 1px solid #66778c;
+    background: var(--stage);
+}
+
+.button-shape {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 5px 11px;
+    background: var(--accent);
+    color: var(--stage);
+    font-size: 22px;
+    font-weight: 680;
+    line-height: 1.2;
+}
+
+.hit-example {
+    color: var(--muted);
+    font-size: 19px;
+    line-height: 1.2;
+}
+
+.hit-plane {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    height: 89px;
+    margin-bottom: 7px;
+    border: 1px solid #627084;
+    background: #202838;
+}
+
+.hit-plane .button-shape {
+    position: absolute;
+    inset: 0 auto auto 0;
+    outline: 2px dashed var(--accent);
+    outline-offset: 3px;
+}
+
+.geometry-example {
+    display: grid;
+    grid-template-columns: 216px minmax(0, 1fr);
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 12px;
+}
+
+.geometry-example .hit-plane {
+    height: 74px;
+    margin: 0;
+}
+
+.geometry-example .button-shape {
+    inset: 28px auto auto 52px;
+}
+
+.geometry-example .button-previous {
+    position: absolute;
+    inset: 8px auto auto 12px;
+    box-sizing: border-box;
+    width: 93px;
+    height: 36px;
+    border: 2px dashed #8294aa;
+}
+
+.slide.code-story .geometry-example .code-explainer {
+    max-width: 20em;
+    margin: 0;
+}
+
+.slide.code-story .geometry-example strong {
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.slide.code-story .geometry-example + pre.source code {
+    font-size: 31px;
+    line-height: 1.04;
+}
+
+.slide .paint-flow,
+.slide .detect-checks,
+.slide.decision .choices,
+#paint-limits .choices {
+    margin: 0;
+}
+
+.slide :is(.paint-flow, .detect-checks, .choices) > div,
+#paint-limits .choices > div {
+    grid-template-columns: 310px minmax(0, 1fr);
+    padding: 11px 0;
+    font-size: 25px;
+    line-height: 1.26;
+}
+
+.slide .detect-checks > div {
+    grid-template-columns: 342px minmax(0, 1fr);
+}
+
+.slide .choices code,
+.slide h2 code,
+.slide .code-explainer code {
+    background: transparent;
+    font-family: 'PT Mono', monospace;
+    padding-inline: 0;
+}
+
+.slide .choices code {
+    font-size: .91em;
+}
+
+.slide .choices dt code {
+    color: inherit;
+}
+
+.node-move {
+    display: grid;
+    grid-template-columns: 235px 44px 235px;
+    align-items: center;
+    gap: 17px;
+    margin-bottom: 10px;
+}
+
+.node-move .form-shape:last-child {
+    border-color: var(--accent);
+}
+
+.node-move .move-arrow {
+    color: var(--accent);
+    font-size: 40px;
+    text-align: center;
+}
+
+#fallback-html pre.source code {
+    font-size: 29px;
+}
+
+#fallback-mount pre.source code {
+    line-height: 1.08;
+}
+
+#fallback-mount .example-link {
+    margin-top: 12px;
+}
+
+.slide#css-overlap h2 {
+    margin-bottom: 20px;
+    font-size: 45px;
+    text-wrap: initial;
+}
+
+.slide#css-overlap .rows {
+    margin: 0;
+}
+
+#css-overlap .rows div {
+    grid-template-columns: 260px minmax(0, 1fr);
+    padding-block: 9px;
+}
+
+#css-overlap .rows dt {
+    font-size: 29px;
+}
+
+#check-frame .frame-time {
+    color: var(--accent);
+    font-size: 92px;
+    font-weight: 700;
+    letter-spacing: -.06em;
+    line-height: 1;
+    margin: 0 0 20px;
+}
+
+#check-frame .frame-check {
+    max-width: 27em;
+    font-size: 30px;
+}
+
+.slide.epoch.finish .epoch-copy {
+    top: 42%;
+    max-width: 420px;
+}
+
+.slide.epoch.finish h2 {
+    font-size: 28px;
+}
+
+.slide.resource-page h2 {
+    margin-bottom: 13px;
+}
+
+.resource-page .resource-lead {
+    margin-bottom: 13px;
+    font-size: 37px;
+}
+
+.resource-page .resource-summary,
+.resource-page .resource-extra {
+    max-width: 32em;
+    margin: 0 0 18px;
+    font-size: 27px;
+    line-height: 1.27;
+}
+
+.resource-page .resource-extra {
+    padding-top: 18px;
+    border-top: 1px solid #505361;
+}
+
+.resource-stills span {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 22px;
+}
+
+.resource-stills img {
+    margin: 0;
+}
+
+.slide.resource-page .resource-list li {
+    grid-template-columns: 238px minmax(0, 1fr);
+    padding-block: 10px;
+    font-size: 24px;
+}
+
+.slide.resource-page .resource-list a {
+    font-size: 25px;
+}
+
+.slide .snippet-note {
+    width: max-content;
+    max-width: calc(100% - 128px);
+}
+.slide .snippet-note .source {
+    border: 0;
+    padding: 0;
+}
+.slide .snippet-note .source code {
+    font-size: 32px;
+    line-height: 1.28;
+}
+.slide .snippet-note .code-explainer {
+    max-width: 740px;
+    margin: 20px 0 0;
+    font-size: 24px;
+    line-height: 1.32;
+}
+
+#reading-extension h2 {
+    margin-bottom: 15px;
+    font-size: 37px;
+}
+
+#reading-extension .source {
+    border: 0;
+    padding: 0;
+    margin: 0 0 12px;
+}
+
+#reading-extension .source code {
+    font-size: 20px;
+    line-height: 1.17;
+}
+
+#check-frame .place {
+    width: max-content;
+    text-align: center;
+}
+
+#check-frame .frame-time {
+    margin: 0;
+}
+

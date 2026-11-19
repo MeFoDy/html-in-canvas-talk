@@ -1,0 +1,24 @@
+@media (any-pointer: fine) and (forced-colors: none) {
+  :root {
+    --game-arrow: url("arrow.png") 3 1, default;
+    --game-hand: url("hand.png") 11 1, pointer;
+    cursor: var(--game-arrow);
+  }
+
+  .shower .slide::after { cursor: var(--game-arrow); }
+
+  a[href], button:enabled:not([aria-disabled="true"]),
+  [role="button"]:not([aria-disabled="true"]), summary,
+  input:is([type="submit"], [type="button"], [type="checkbox"], [type="radio"]):enabled,
+  .shower.list .slide { cursor: var(--game-hand); }
+
+  /* Keep the editing cursor inside both ordinary HTML and drawable forms. */
+  textarea, input:not([type]), input:is([type="text"], [type="email"], [type="search"], [type="url"], [type="tel"], [type="password"]),
+  [contenteditable]:not([contenteditable="false"]) { cursor: text; }
+}
+
+@media (any-pointer: fine) {
+  html.cursor-idle, html.cursor-idle * {
+    cursor: none !important;
+  }
+}

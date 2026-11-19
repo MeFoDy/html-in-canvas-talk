@@ -1,0 +1,112 @@
+.slide#speaker h2 {
+    margin-bottom: 26px;
+    font: 400 43px/1.35 'Press Start 2P', monospace;
+    letter-spacing: -.045em;
+}
+
+.slide#first-css {
+    gap: 16px;
+    padding: 38px 48px 38px 60px;
+}
+
+.slide#first-css img {
+    width: 472px;
+    flex: none;
+}
+
+#css-overlap .rows div {
+    grid-template-columns: 210px minmax(0, 1fr);
+    column-gap: 16px;
+}
+
+#browser .pipeline strong {
+    white-space: nowrap;
+}
+
+.slide .engine-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    top: 35%;
+}
+
+.slide .engine-brand img {
+    width: 152px;
+    height: 152px;
+    object-fit: contain;
+}
+
+#three-material .engine-brand img {
+    filter: invert(1);
+}
+
+.slide .engine-brand h2 {
+    margin: 0;
+    font: 400 60px/1.1 'Press Start 2P', monospace;
+}
+
+.slide .video-preview {
+    display: block;
+    width: 768px;
+    background: none;
+}
+
+.slide .video-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.slide.review-art h2 {
+    position: relative;
+    max-width: 48%;
+    margin-top: 96px;
+    font: 400 30px/1.45 'Press Start 2P', monospace;
+    letter-spacing: -.045em;
+    text-align: left;
+    text-wrap: initial;
+}
+
+.slide#dom-to-image .source code {
+    font-size: 26px;
+}
+
+#sample-color .snippet-note,
+#dom-to-image .snippet-note {
+    top: 50%;
+}
+
+:is(#sample-color, #dom-to-image) .snippet-note pre {
+    margin: 0;
+}
+
+#shader-tools .snippet-note {
+    top: 40%;
+}
+
+.slide .video-preview::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 52px;
+    background: var(--stage);
+    border-radius: 8px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 38% 24%, 38% 76%, 73% 50%, 38% 24%);
+}
+
+#browser-talk .video-qr {
+    position: absolute;
+    left: 48px;
+    bottom: 44px;
+    background: white;
+    line-height: 0;
+}
+.video-qr img { width: 148px; height: 148px; image-rendering: pixelated; }
+#slides .final-invite { align-self: flex-start; margin-top: 6px; }
+#slides .final-invite h2 { font: 400 29px/1.4 'Press Start 2P', monospace; margin-bottom: 22px; }
+#presentation-url { display: inline-grid; gap: 12px; background: none; line-height: 1.12; color: var(--ink); }
+#presentation-url img { display: block; image-rendering: pixelated; }
+#presentation-url span { font-size: 23px; color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }

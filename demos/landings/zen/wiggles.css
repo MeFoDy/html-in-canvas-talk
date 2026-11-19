@@ -1,0 +1,145 @@
+/* Wiggles the Wonderworm by Joseph Pearson. See the dedication in 099.css. */
+@import url("../../zen-garden/099/099.css");
+
+/* The print textures and panel art stay local and use the artist's originals. */
+html { background: #e3ddc6; }
+body {
+  min-width: 0;
+  margin: 0;
+  background-size: min(100%, 62rem) auto;
+  background-color: #e3ddc6;
+  color: #211a19;
+  font: 1rem/1.43 'Golos Text', Arial, sans-serif;
+}
+
+.page-wrapper { width: min(56rem, calc(100% - 2rem)); }
+
+aside.theme-picker {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  left: auto;
+  justify-content: flex-end;
+  width: auto;
+  margin: 0;
+  padding: .55rem .75rem .4rem 0;
+  border-bottom: 2px solid #211a19;
+  background: #eee9d0;
+  font: 700 .875rem/1.2 'Golos Text', Arial, sans-serif;
+}
+.theme-picker button { min-height: 2rem; border: 2px solid currentColor; }
+.theme-picker [aria-pressed="true"] { background: #f6e456; }
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto 1fr;
+  gap: .6rem .75rem;
+  height: auto;
+  margin: .85rem 0 .75rem;
+}
+
+.intro header { display: block; grid-area: 1 / 1; }
+.intro header,
+.intro .summary { padding-inline: .7rem; }
+.intro .event-date {
+  display: inline-block;
+  margin: .2rem 0 .5rem;
+  border: 2px solid #211a19;
+  padding: .3rem .55rem;
+  background: #f6e456;
+  transform: rotate(-2deg);
+  font: 700 1rem/1.2 'Golos Text', Arial, sans-serif;
+}
+.intro h1 {
+  margin: 0;
+  font: 900 clamp(1.8rem, 4.4vw, 3.7rem)/.98 Georgia, serif;
+  letter-spacing: -.06em;
+  overflow-wrap: anywhere;
+}
+
+.intro .summary {
+  grid-area: 2 / 1;
+  position: static;
+  width: auto;
+  height: auto;
+  background: none;
+}
+
+.intro .summary p:first-child {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0 0 .6rem;
+  font-family: inherit;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.intro::before,
+.intro::after {
+  content: "";
+  grid-row: 1 / 3;
+  background-position: center;
+  background-size: cover;
+  border: 2px solid #211a19;
+}
+.intro::before { grid-column: 2; background-image: url("../../zen-garden/099/P1PANEL2.jpg"); }
+.intro::after { grid-column: 3; background-image: url("../../zen-garden/099/P1PANEL3.jpg"); }
+
+.cta { border: 2px solid #211a19; background: #f6e456; color: #211a19; font-weight: 750; }
+.cta:hover { box-shadow: 3px 3px #211a19; }
+
+.main {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: .75rem;
+  align-items: start;
+}
+
+.main .requirements,
+.main .participation {
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border: 2px solid #211a19;
+  padding: .8rem 1.05rem;
+  background: #fff9df;
+}
+.main .participation { background: #f0bfd0; }
+.main h2 { margin: 0 0 .4em; font: 800 1.65rem/1.1 Georgia, serif; }
+.main .participation p {
+  position: static;
+  width: auto;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+}
+
+.program { margin: 0; }
+.program > div { display: grid; grid-template-columns: 4em 1fr; padding: .35rem 0; }
+.program > div + div { border-top: 1px dashed currentColor; }
+.program dt { font-weight: 800; }
+.program dd { margin: 0; }
+
+footer { height: auto; padding: .9rem 0; text-align: left; }
+footer::before { content: none; }
+footer p { font: .82rem/1.4 'Golos Text', Arial, sans-serif; text-align: left; }
+footer a { text-decoration: underline; }
+.extra1 { width: min(100%, 62rem); margin-left: 0; transform: translateX(-50%); }
+
+@media (max-width: 750px) {
+  .intro { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  .intro::before { display: none; }
+  .intro::after { grid-column: 2; }
+  .main { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 420px) {
+  aside.theme-picker { padding-inline-end: 0; }
+  .intro { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); }
+  .intro header,
+  .intro .summary { padding-inline: 0; }
+  .intro h1 { font-size: clamp(1.3rem, 6.3vw, 1.7rem); }
+}

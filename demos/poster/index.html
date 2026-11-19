@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Редактор афиши</title>
+<script defer src="../../assets/cursors/idle.js"></script>
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="icon" href="data:,">
+  <style>
+    main { max-width: 1024px; }
+    .workspace { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 570px); gap: 32px; align-items: start; }
+    button { font: inherit; cursor: pointer; }
+    button[aria-disabled="true"] { cursor: wait; opacity: .78; }
+    button:focus-visible, [contenteditable]:focus-visible { outline: 3px solid #ffcf8b; outline-offset: 3px; }
+    .save {
+      min-height: 49px; padding: 9px 12px; border: 1px solid var(--accent); border-radius: 5px;
+      background: transparent; color: var(--accent); font-size: 19px; font-weight: 700;
+    }
+    .save:hover { background: #223246; }
+    #mode { margin-bottom: 16px; color: var(--muted); font-size: 18px; }
+    [contenteditable] { cursor: text; }
+    .status { margin-top: 11px; }
+    figure { margin: 0; }
+    .preview { position: relative; aspect-ratio: 570 / 360; }
+    .artwork {
+      position: absolute; width: 570px; height: 360px; overflow: hidden;
+      transform: scale(var(--preview-scale, 1)); transform-origin: top left;
+    }
+    .artwork canvas { position: absolute; inset: 0; width: 570px; height: 360px; }
+    #output { z-index: 1; }
+    @media (max-width: 710px) {
+      main { padding: 24px; }
+      .workspace { grid-template-columns: minmax(0, 570px); gap: 19px; }
+      .status { min-height: 0; }
+    }
+  </style>
+  <style id="poster-style">
+    .poster, .poster * { box-sizing: border-box; }
+    .poster {
+      position: relative; width: 570px; height: 360px; overflow: hidden;
+      padding: 23px 28px; color: #fff3d7; font: 18px/1.2 system-ui, sans-serif;
+    }
+    .poster h2, .poster p, .poster dl, .poster dd { margin: 0; }
+    .poster .date {
+      color: #ffd39c; font: 650 16px/1.2 ui-monospace, monospace;
+      letter-spacing: .07em; text-transform: uppercase;
+    }
+    .poster h2 {
+      width: 330px; margin: 7px 0 0; font-size: 54px; line-height: .98; font-weight: 890;
+      letter-spacing: -.045em; overflow-wrap: anywhere; text-wrap: pretty;
+    }
+    .poster .venue {
+      position: absolute; top: 168px; left: 28px; width: 320px;
+      overflow-wrap: anywhere; font-size: 18px; font-weight: 650;
+    }
+    .poster .program {
+      position: absolute; inset: auto 22px 21px; padding: 8px 14px;
+      background: #151221e8; border: 1px solid #fcb37964; border-radius: 4px;
+    }
+    .poster .program > div {
+      display: grid; grid-template-columns: 66px minmax(0, 1fr); align-items: baseline;
+      min-height: 34px; padding: 7px 0; overflow-wrap: anywhere;
+    }
+    .poster .program > div + div { border-top: 1px solid #fcb37944; }
+    .poster .program dt { color: #ffd39c; font: 650 15px/1.2 ui-monospace, monospace; }
+    .poster .program dd { color: #fff5e5; font-size: 16px; font-weight: 620; }
+    .poster .program dd > span { display: block; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="workspace">
+      <div>
+        <p id="mode">HTML · фон на Canvas</p>
+        <button class="save" id="save" type="button">Скачать HTML ↓</button>
+        <p class="status" id="status" role="status"></p>
+      </div>
+      <figure aria-label="Предпросмотр афиши">
+        <div class="preview">
+          <div class="artwork">
+            <canvas id="backdrop" width="1140" height="720" aria-hidden="true"></canvas>
+            <canvas id="output" width="1140" height="720" content="drawable" hidden></canvas>
+            <article class="poster" id="poster" drawable>
+              <p class="date"><time datetime="2026-11-28">28 ноября</time> · суббота</p>
+              <h2 id="poster-title" contenteditable="plaintext-only" aria-label="Название афиши">Свет после заката</h2>
+              <p class="venue" id="poster-venue" contenteditable="plaintext-only" aria-label="Место">Городская обсерватория</p>
+              <dl class="program" aria-label="Программа вечера">
+                <div><dt><time datetime="18:30">18:30</time></dt><dd>Открытие дверей</dd></div>
+                <div><dt><time datetime="19:00">19:00</time></dt><dd>Экскурсия по куполу</dd></div>
+                <div>
+                  <dt><time datetime="20:00">20:00</time></dt>
+                  <dd><span id="poster-session" contenteditable="plaintext-only" aria-label="Событие в 20:00">Наблюдения в телескоп</span></dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </main>
+  <script>
+    const width = 570;
+    const height = 360;
+    const canvas = document.querySelector('#output');
+    const backdrop = document.querySelector('#backdrop');
+    const poster = document.querySelector('#poster');
+    const artwork = document.querySelector('.artwork');
+    const preview = document.querySelector('.preview');
+    const save = document.querySelector('#save');
+    const status = document.querySelector('#status');
+    const mode = document.querySelector('#mode');
+    const fields = [
+      { element: document.querySelector('#poster-title'), maxHeight: 113 },
+      { element: document.querySelector('#poster-venue'), maxHeight: 45 },
+      { element: document.querySelector('#poster-session'), maxHeight: 39 },
+    ];
+    const context = canvas.getContext('2d');
+    let native = canvas.content === 'drawable' && typeof canvas.requestPaint === 'function'
+      && typeof context?.drawElementImage === 'function';
+    let awaitingPaint = false;
+    let paintTimeout;
+
+    function paintBackdrop(ctx) {
+      ctx.save();
+      ctx.scale(ctx.canvas.width / width, ctx.canvas.height / height);
+      const sky = ctx.createLinearGradient(0, 0, width, height);
+      sky.addColorStop(0, '#24152c');
+      sky.addColorStop(.53, '#331934');
+      sky.addColorStop(1, '#6a3350');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, width, height);
+
+      const sun = ctx.createRadialGradient(442, 103, 46, 442, 103, 154);
+      sun.addColorStop(0, '#ec835633');
+      sun.addColorStop(1, '#ec835600');
+      ctx.fillStyle = sun;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = '#ffb57b65';
+      for (const radius of [57, 72, 88, 104, 123]) {
+        ctx.beginPath();
+        ctx.arc(442, 103, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(442, 103, 47, 0, 2 * Math.PI);
+      ctx.clip();
+      const disk = ctx.createLinearGradient(422, 55, 468, 148);
+      disk.addColorStop(0, '#ffd38b');
+      disk.addColorStop(1, '#ec7754');
+      ctx.fillStyle = disk;
+      ctx.fillRect(391, 52, 103, 104);
+      ctx.strokeStyle = '#522649ad';
+      for (let y = 98; y < 151; y += 6) {
+        ctx.lineWidth = 1 + (y - 98) / 16;
+        ctx.beginPath();
+        ctx.moveTo(391, y);
+        ctx.lineTo(493, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.fillStyle = '#ffce9d';
+      for (const [x, y, radius] of [[438, 31, 2.5], [515, 55, 2], [372, 158, 3], [505, 193, 2.5], [538, 153, 1.5]]) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function fitField({ element, maxHeight }) {
+      element.style.fontSize = '';
+      const initialSize = parseFloat(getComputedStyle(element).fontSize);
+      for (let size = initialSize - 1; element.offsetHeight > maxHeight && size >= 10; size--) {
+        element.style.fontSize = size + 'px';
+      }
+    }
+
+    function setSaving(active) {
+      if (active) save.setAttribute('aria-disabled', 'true');
+      else save.removeAttribute('aria-disabled');
+    }
+
+    function download(blob, name) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = name;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 30_000);
+    }
+
+    function saveHtml() {
+      const style = document.querySelector('#poster-style').textContent;
+      const background = backdropContext ? `url("${backdrop.toDataURL()}")` : '#24152c';
+      const artwork = poster.cloneNode(true);
+      artwork.removeAttribute('drawable');
+      artwork.querySelectorAll('[contenteditable]').forEach(field => field.removeAttribute('contenteditable'));
+      const html = `<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Афиша</title><style>
+        ${style}
+        body { margin: 0; background: #24152c; }
+        .poster { margin: auto; background: ${background} center / cover; print-color-adjust: exact; }
+        @media print { body { background: white; } }
+        </style><body>${artwork.outerHTML}</body></html>`;
+      download(new Blob([html], { type: 'text/html;charset=utf-8' }), 'afisha.html');
+      status.textContent = 'HTML-файл скачивается.';
+    }
+
+    function useHtml(message) {
+      clearTimeout(paintTimeout);
+      native = false;
+      awaitingPaint = false;
+      // The same article serves as the ordinary DOM preview.
+      const focused = poster.contains(document.activeElement) ? document.activeElement : null;
+      artwork.append(poster);
+      canvas.hidden = true;
+      focused?.focus();
+      setSaving(false);
+      save.textContent = 'Скачать HTML ↓';
+      mode.textContent = 'HTML · фон на Canvas';
+      status.textContent = message;
+    }
+
+    function paint() {
+      if (!native) return;
+      try {
+        paintBackdrop(context);
+        // With an explicit destination box the export is always 1140 × 720,
+        // regardless of the screen DPR or the preview scale.
+        context.drawElementImage(poster, 0, 0, canvas.width, canvas.height);
+      } catch {
+        useHtml('Canvas недоступен. Афишу можно скачать в HTML.');
+        return;
+      }
+      if (!awaitingPaint) return;
+      awaitingPaint = false;
+      // Take the PNG snapshot in the same paint event as the current DOM frame.
+      canvas.toBlob((blob) => {
+        if (!native) return;
+        clearTimeout(paintTimeout);
+        if (!blob) {
+          useHtml('PNG не сформировался. Афишу можно скачать в HTML.');
+          return;
+        }
+        download(blob, 'afisha.png');
+        setSaving(false);
+        status.textContent = 'PNG скачивается.';
+      }, 'image/png');
+    }
+
+    for (const field of fields) {
+      field.element.addEventListener('input', () => {
+        fitField(field);
+        if (native) canvas.requestPaint();
+      });
+    }
+
+    save.addEventListener('click', () => {
+      if (save.hasAttribute('aria-disabled')) return;
+      if (!native) {
+        saveHtml();
+        return;
+      }
+      setSaving(true);
+      awaitingPaint = true;
+      status.textContent = 'Готовим PNG…';
+      paintTimeout = setTimeout(() => useHtml('PNG не сформировался. Афишу можно скачать в HTML.'), 1600);
+      canvas.requestPaint();
+    });
+
+    new ResizeObserver(([entry]) => {
+      artwork.style.setProperty('--preview-scale', entry.contentRect.width / width);
+    }).observe(preview);
+    const backdropContext = backdrop.getContext('2d');
+    if (backdropContext) paintBackdrop(backdropContext);
+    if (native) {
+      canvas.addEventListener('paint', paint);
+      canvas.addEventListener('contextlost', () => useHtml('Canvas недоступен. Афишу можно скачать в HTML.'));
+      canvas.append(poster);
+      canvas.hidden = false;
+      mode.textContent = 'Canvas 2D · drawElementImage()';
+      save.textContent = 'Скачать PNG ↓';
+      canvas.requestPaint();
+    } else {
+      useHtml('Афиша откроется отдельной HTML-страницей.');
+    }
+    fields.forEach(fitField);
+  </script>
+</body>
+</html>
